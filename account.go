@@ -83,12 +83,12 @@ func (c *Client) EditAccountInfo(ctx context.Context, params *EditAccountInfoPar
 		}
 	}
 
-	httpResponse, err := c.callAPI(ctx, r, opts...)
+	resp, err := c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
 	}
 	acc := new(responseAccount)
-	if err = json.Unmarshal(httpResponse, acc); err != nil {
+	if err = json.Unmarshal(resp, acc); err != nil {
 		return nil, err
 	}
 	if !acc.OK {
