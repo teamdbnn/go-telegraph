@@ -105,7 +105,7 @@ type PageViews struct {
 
 // Node is abstract object represents a DOM Node. It can be a String which represents a DOM text node or a
 // NodeElement object.
-type Node interface{}
+type Node any
 
 var _ Node = &NodeElement{}
 
