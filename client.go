@@ -17,7 +17,7 @@ const (
 
 type (
 	doFunc func(req *http.Request) (*http.Response, error)
-	logger func(format string, v ...interface{})
+	logger func(format string, v ...any)
 )
 
 func NewClient(accessToken string) *Client {
@@ -41,7 +41,7 @@ type Client struct {
 	do          doFunc
 }
 
-func (c *Client) debug(format string, v ...interface{}) {
+func (c *Client) debug(format string, v ...any) {
 	if c.Debug && c.Logger != nil {
 		c.Logger(format, v...)
 	}

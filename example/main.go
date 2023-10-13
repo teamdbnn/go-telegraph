@@ -39,7 +39,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("* ContentFormat error: %v", err)
 	}
-	page, err := client.CreatePage(ctx, "Test page", content, &telegraph.CreatePageParams{
+	page, err := client.CreatePage(ctx, "Test page", content, &telegraph.PageParams{
 		AuthorName:    "",
 		AuthorURL:     "",
 		ReturnContent: true,
@@ -63,7 +63,7 @@ func main() {
 		log.Fatalf("* ContentFormat error: %v", err)
 	}
 
-	page, err = client.EditPage(ctx, page.Path, "Test page (edited)", content, &telegraph.EditPageParams{
+	page, err = client.EditPage(ctx, page.Path, "Test page (edited)", content, &telegraph.PageParams{
 		ReturnContent: true,
 	})
 	if err == nil {
