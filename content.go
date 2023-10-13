@@ -8,8 +8,10 @@ import (
 	"golang.org/x/net/html"
 )
 
+type FilterFunc func(domNode *html.Node) bool
+
 // ContentFormat transforms data to a DOM-based format to represent the content of the page.
-func ContentFormat(data interface{}) (n []Node, err error) {
+func ContentFormat(data any, filters ...FilterFunc) (n []Node, err error) {
 	var dst *html.Node
 
 	switch src := data.(type) {
@@ -27,12 +29,19 @@ func ContentFormat(data interface{}) (n []Node, err error) {
 		return nil, err
 	}
 
-	n = append(n, domToNode(dst.FirstChild))
+	if node := domToNode(dst.FirstChild, filters...); node != nil {
+		n = append(n, node)
+	}
 
 	return n, nil
 }
 
-func domToNode(domNode *html.Node) interface{} {
+func domToNode(domNode *html.Node, filters ...FilterFunc) any {
+	for _, filter := range filters {
+		if filter(domNode) {
+			return nil
+		}
+	}
 	if domNode.Type == html.TextNode {
 		return domNode.Data
 	}
@@ -59,7 +68,9 @@ func domToNode(domNode *html.Node) interface{} {
 	}
 
 	for child := domNode.FirstChild; child != nil; child = child.NextSibling {
-		nodeElement.Children = append(nodeElement.Children, domToNode(child))
+		if node := domToNode(child, filters...); node != nil {
+			nodeElement.Children = append(nodeElement.Children, domToNode(child, filters...))
+		}
 	}
 
 	return nodeElement

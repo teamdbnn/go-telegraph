@@ -19,7 +19,7 @@ type request struct {
 }
 
 // setFormParam set param with key/value to request form body
-func (r *request) setFormParam(key string, value interface{}) {
+func (r *request) setFormParam(key string, value any) {
 	if r.form == nil {
 		r.form = url.Values{}
 	}
