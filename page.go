@@ -262,7 +262,6 @@ func (c *Client) UploadFiles(ctx context.Context, filenames []string, opts ...Re
 		return nil, err
 	}
 
-	c.BaseURL = baseURL
 	r := &request{
 		method:   http.MethodPost,
 		endpoint: "upload",
@@ -271,7 +270,10 @@ func (c *Client) UploadFiles(ctx context.Context, filenames []string, opts ...Re
 
 	opts = append(opts, WithHeader("Content-Type", writer.FormDataContentType(), false))
 
-	resp, err := c.callAPI(ctx, r, opts...)
+	cc := *c
+	cc.BaseURL = baseURL
+
+	resp, err := cc.callAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +315,6 @@ func (c *Client) Upload(ctx context.Context, filename string, content io.Reader,
 		return nil, err
 	}
 
-	c.BaseURL = baseURL
 	r := &request{
 		method:   http.MethodPost,
 		endpoint: "upload",
@@ -322,7 +323,9 @@ func (c *Client) Upload(ctx context.Context, filename string, content io.Reader,
 
 	opts = append(opts, WithHeader("Content-Type", writer.FormDataContentType(), false))
 
-	resp, err := c.callAPI(ctx, r, opts...)
+	cc := *c
+	cc.BaseURL = baseURL
+	resp, err := cc.callAPI(ctx, r, opts...)
 	if err != nil {
 		return nil, err
 	}
