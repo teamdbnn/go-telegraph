@@ -71,6 +71,7 @@ func (c *Client) EditPage(ctx context.Context, path, title string, content []Nod
 	r := &request{
 		method:   http.MethodPost,
 		endpoint: fmt.Sprintf("%v/%v", "editPage", path),
+		secured:  true,
 	}
 	r.setFormParam("title", title)
 	contentData, err := json.Marshal(&content)
