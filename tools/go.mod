@@ -1,4 +1,4 @@
-module github.com/teamdbnn/go-telegraph
+module github.com/teamdbnn/go-telegraph/tools
 
 go 1.20
 
